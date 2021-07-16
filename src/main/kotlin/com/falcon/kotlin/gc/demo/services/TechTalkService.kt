@@ -1,14 +1,29 @@
 package com.falcon.kotlin.gc.demo.services
 
 import com.falcon.kotlin.gc.demo.dtos.TechTalkDto
+import com.falcon.kotlin.gc.demo.models.TechTalk
+import com.falcon.kotlin.gc.demo.repositories.TechTalkRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-class TechTalkService {
+class TechTalkService(@Autowired
+                      val repository: TechTalkRepository) {
 
-    fun getTechTalks() : MutableList<TechTalkDto> {
-        val mutableList = mutableListOf<TechTalkDto>()
-        mutableList.add(TechTalkDto("SonarQube", "14-07-2021"));
-        return mutableList;
+
+    fun getTechTalks(): MutableIterable<TechTalk> {
+        return repository.findAll();
     }
+
+    fun createTechTalk(techTalkDto: TechTalkDto) {
+        repository.save(techTalkDto.toTechTalk())
+
+    }
+
+    private fun TechTalkDto.toTechTalk() = TechTalk(
+            name = "$name",
+            date = "$date",
+            id = UUID.randomUUID()
+    )
 }
