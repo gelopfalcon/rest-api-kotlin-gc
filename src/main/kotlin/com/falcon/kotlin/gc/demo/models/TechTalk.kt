@@ -4,7 +4,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity(name = "tech_talks")
- class TechTalk(
+ data class TechTalk(
         @Id
         var id: UUID,
         @Column
