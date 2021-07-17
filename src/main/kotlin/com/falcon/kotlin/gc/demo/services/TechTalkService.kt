@@ -23,6 +23,14 @@ class TechTalkService(@Autowired
 
     }
 
+    fun getTechTalkById(id : UUID): TechTalkResponseDto {
+        var responseDto = repository.findById(id);
+        if(responseDto.isPresent) {
+            return  repository.findById(id).get().toTechTalkDto()
+        }
+        return TechTalkResponseDto(UUID.randomUUID(), "", "");
+    }
+
     private fun TechTalkDto.toTechTalk() = TechTalk(
             name = name,
             date = date,
